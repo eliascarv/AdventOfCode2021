@@ -1,7 +1,7 @@
 # Data
-data = parse.(Int, readlines("input.txt"))
+const data = parse.(Int, readlines("input.txt"))
 
-## Part 1 -----------------------------------------__
+## Part 1 -------------------------------------------
 # Solution
 sum(1:length(data)-1) do i
     data[i+1] > data[i]
