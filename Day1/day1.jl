@@ -1,5 +1,5 @@
 # Data
-const data = parse.(Int, readlines("input.txt"))
+const data = parse.(Int, readlines(joinpath(@__DIR__, "input.txt")))
 
 ## Part 1 -------------------------------------------
 # Solution
