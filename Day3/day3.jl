@@ -36,6 +36,9 @@ end
 power_consumption(data)
 
 ## Part 2 -----------------------------------------------------------
+oxygen(data, idxs, col, mid) = count(data[idxs, col]) ≥ mid ? 1 : 0
+co2(data, idxs, col, mid) = count(data[idxs, col]) ≥ mid ? 0 : 1
+
 function rating(data::BitMatrix, compare::Function)
     idxs = collect(axes(data, 1))
     for col in axes(data, 2)        
@@ -48,10 +51,6 @@ function rating(data::BitMatrix, compare::Function)
     end
     return binary2int(data[idxs, :])
 end
-
-oxygen(data, idxs, col, mid) = count(data[idxs, col]) ≥ mid ? 1 : 0
-
-co2(data, idxs, col, mid) = count(data[idxs, col]) ≥ mid ? 0 : 1
 
 life_support(data) = rating(data, oxygen) * rating(data, co2)
 
