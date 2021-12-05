@@ -14,9 +14,10 @@ end
 
 ## Part 1 -------------------------------------------------
 function winfirst(boards, nums)
-    set = nums[1:5]
+    set = nums[1:4]
 
-    for n in nums[6:end]
+    for n in nums[5:end]
+        push!(set, n)  
         for board in boards
             for col in eachcol(board)
                 col ⊆ set && return board, set
@@ -25,10 +26,7 @@ function winfirst(boards, nums)
                 row ⊆ set && return board, set
             end
         end
-        push!(set, n)
     end
-
-    return last(boards), nums
 end
 
 function score(board, nums)
@@ -42,10 +40,11 @@ score(winfirst(boards, nums)...)
 
 ## Part 2 -------------------------------------------------
 function winlast(boards, nums)
-    set = nums[1:5]
+    set = nums[1:4]
     win = falses(length(boards))
     
-    for n in nums[6:end]
+    for n in nums[5:end]
+        push!(set, n)
         for (i, board) in enumerate(boards)
             if win[i] == false
                 for col in eachcol(board)
@@ -57,10 +56,7 @@ function winlast(boards, nums)
             end
             all(win) && return board, set
         end
-        push!(set, n)
     end
-
-    return last(boards), nums
 end
 
 # Solution: 17884
