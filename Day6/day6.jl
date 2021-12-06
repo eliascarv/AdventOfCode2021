@@ -18,8 +18,8 @@ function simulate(init, ndays)
     return sum(values(sim))
 end
 
-# Solution Part 1: 375_482
+# Part 1 solution: 375_482
 simulate(data, 80)
 
-# Solution Part 2: 1_689_540_415_957
+# Part 2 solution: 1_689_540_415_957
 simulate(data, 256)
