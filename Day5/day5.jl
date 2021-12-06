@@ -6,8 +6,8 @@ segments = map(readlines(joinpath(@__DIR__, "input.txt"))) do line
     x1, y1 = parse.(Int, split(p1, ","))
     x2, y2 = parse.(Int, split(p2, ","))
 
-    x = x1 < x2 ? 1 : -1
-    y = y1 < y2 ? 1 : -1
+    x = x1 ≤ x2 ? 1 : -1
+    y = y1 ≤ y2 ? 1 : -1
     step = CartesianIndex(x, y)
     CartesianIndex(x1, y1):step:CartesianIndex(x2, y2)
 end
