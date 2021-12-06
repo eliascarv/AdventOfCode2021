@@ -1,17 +1,9 @@
+# Data
 data = parse.(Int, split(readline(joinpath(@__DIR__, "input.txt")), ','))
 
+## Part 1 & 2 -------------------------------------------------------------
 function simulate(init, ndays)
-    sim = Dict(
-        0 => count(==(0), init),
-        1 => count(==(1), init),
-        2 => count(==(2), init),
-        3 => count(==(3), init),
-        4 => count(==(4), init),
-        5 => count(==(5), init),
-        6 => count(==(6), init),
-        7 => count(==(7), init),
-        8 => count(==(8), init)
-    )
+    sim = Dict(i => count(==(i), init) for i in 0:8)
     idx = vcat(0:5, 7)
 
     for _ in 1:ndays
@@ -26,6 +18,8 @@ function simulate(init, ndays)
     return sum(values(sim))
 end
 
+# Solution Part 1: 375_482
 simulate(data, 80)
 
+# Solution Part 2: 1_689_540_415_957
 simulate(data, 256)
