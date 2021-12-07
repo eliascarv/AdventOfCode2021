@@ -12,7 +12,8 @@ minimum(cost1(data, k) for k in 0:maximum(data))
 ## Part 2 -----------------------------------------
 function cost2(x, k) 
     ds = dists(x, k)
-    sum((ds + ds.^2) .÷ 2)
+    # Or: (ds + ds.^2) .÷ 2
+    sum(ds .* (ds .+ 1) .÷ 2)
 end
 
 # Solution: 94_862_124
