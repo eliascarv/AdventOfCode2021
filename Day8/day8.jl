@@ -9,50 +9,42 @@ for (i, line) in enumerate(lines)
 end
 
 ## Part 1 -------------------------------------------------
-n1 = sum(count.(str -> length(str) == 2, outputs))
-n4 = sum(count.(str -> length(str) == 4, outputs))
-n7 = sum(count.(str -> length(str) == 3, outputs))
-n8 = sum(count.(str -> length(str) == 7, outputs))
-
 # Solution: 383
-n1 + n4 + n7 + n8
+sum(count.(str -> length(str) ∈ [2, 3, 4, 7], outputs))
 
 ## Part 2 -------------------------------------------------
-sortstring(str) = string(sort(split(str, ""))...)
+sortstring(str) = join(sort(collect(str)))
 
 function decode(input)
     sorted = sortstring.(input)
-    ns = Dict{String, Int}()
+    dec = Dict{String, Int}()
     for str in sorted
-        length(str) == 2 && (ns[str] = 1)
-        length(str) == 4 && (ns[str] = 4)
-        length(str) == 3 && (ns[str] = 7)
-        length(str) == 7 && (ns[str] = 8)
+        length(str) == 2 && (dec[str] = 1)
+        length(str) == 4 && (dec[str] = 4)
+        length(str) == 3 && (dec[str] = 7)
+        length(str) == 7 && (dec[str] = 8)
     end
-    st = Dict(reverse(kv) for kv in ns)
-    for str in setdiff(sorted, keys(ns))
+    code = Dict(reverse(kv) for kv in dec)
+    for str in setdiff(sorted, keys(dec))
         if length(str) == 6
-            (st[4] ⊆ str && st[7] ⊆ str) && (ns[str] = 9)
-            (st[4] ⊈ str && st[7] ⊆ str) && (ns[str] = 0)
-            (st[4] ⊈ str && st[7] ⊈ str) && (ns[str] = 6)
+            (code[4] ⊆ str && code[7] ⊆ str) && (dec[str] = 9)
+            (code[4] ⊈ str && code[7] ⊆ str) && (dec[str] = 0)
+            (code[4] ⊈ str && code[7] ⊈ str) && (dec[str] = 6)
         end
     end
-    st = Dict(reverse(kv) for kv in ns)
-    for str in setdiff(sorted, keys(ns))
-        st[1] ⊆ str && (ns[str] = 3)
-        str ⊆ st[6] && (ns[str] = 5)
-        str ⊈ st[9] && (ns[str] = 2)
+    code = Dict(reverse(kv) for kv in dec)
+    for str in setdiff(sorted, keys(dec))
+        code[1] ⊆ str && (dec[str] = 3)
+        str ⊆ code[6] && (dec[str] = 5)
+        str ⊈ code[9] && (dec[str] = 2)
     end
-    return ns
+    return dec
 end
 
 function getnum(dec, output)
-    sorted = reverse(sortstring.(output))
-    num = 0
-    for (i, str) in enumerate(sorted)
-        num += dec[str] * 10^(i-1)
-    end
-    return num
+    sorted = sortstring.(output)
+    nums = [dec[str] for str in sorted]
+    return evalpoly(10, reverse(nums))
 end
 
 function sum_outputs(inputs, outputs)
