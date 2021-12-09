@@ -5,40 +5,64 @@ for i in axes(data, 1)
     data[i, :] .= parse.(Int, split(lines[i], ""))
 end
 
-test = [
-    2 1 9 9 9 4 3 2 1 0
-    3 9 8 7 8 9 4 9 2 1
-    9 8 5 6 7 8 9 8 9 2
-    8 7 6 7 8 9 6 7 8 9
-    9 8 9 9 9 6 5 6 7 8
-]
-
+## Part 1 ---------------------------------------------------------------------
 function lowpoints(data)
-    minrow = mincol = 1
-    maxrow, maxcol = size(data)
+    nr, nc = size(data)
 
-    points = Int[]
+    idxs = falses(nr, nc)
     for j in axes(data, 2)
         for i in axes(data, 1)
             t = trues(4)
-            if i - 1 ≥ minrow
+            if i > 1
                 data[i-1, j] ≤ data[i, j] && (t[1] = false)
             end
-            if i + 1 ≤ maxrow
+            if i < nr
                 data[i+1, j] ≤ data[i, j] && (t[2] = false)
             end
-            if j - 1 ≥ mincol
+            if j > 1
                 data[i, j-1] ≤ data[i, j] && (t[3] = false)
             end
-            if j + 1 ≤ maxcol
+            if j < nc
                 data[i, j+1] ≤ data[i, j] && (t[4] = false)
             end
-            all(t) && push!(points, data[i, j])
+            all(t) && (idxs[i, j] = true)
         end
     end
-    return points
+    return idxs
 end
 
-lowpoints(data)
-        
-sum(x -> x + 1, lowpoints(data))
+# Solution: 541
+sum(x -> x + 1, data[lowpoints(data)])
+
+## Part 2 ---------------------------------------------------------------------
+function findbasins(data)
+    nr, nc = size(data)
+    
+    lpidxs = lowpoints(data)
+    nb = count(lpidxs)
+
+    basins = zeros(Int, nr, nc)
+    basins[lpidxs] .= 1:nb
+
+    for _ in 1:10
+        for j in axes(data, 2)
+            for i in axes(data, 1)
+                data[i, j] == 9 && continue
+                basins[i, j] > 0 && continue
+
+                bl = i > 1  ? basins[i-1, j] : 0
+                br = i < nr ? basins[i+1, j] : 0
+                bb = j > 1  ? basins[i, j-1] : 0
+                bt = j < nc ? basins[i, j+1] : 0
+
+                basins[i, j] = max(bl, br, bb, bt)
+            end
+        end
+    end
+    return basins
+end
+
+# Solution: 847_504
+basins = findbasins(data)
+largest = sort([count(==(i), basins) for i in 1:maximum(basins)], rev=true)[1:3]
+prod(largest)
