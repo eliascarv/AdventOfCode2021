@@ -4,7 +4,6 @@ data = split.(readlines(joinpath(@__DIR__, "input.txt")), "")
 ## Part 1 -------------------------------------------------------------
 function firstillegal(data)
     illegals = String[]
-
     brktpairs = Dict("[" => "]", "{" => "}", "(" => ")", "<" => ">")
     
     for line in data
@@ -36,7 +35,6 @@ point1(firstillegal(data))
 ## Part 2 -------------------------------------------------------------
 function incomplete(data)
     incompletes = Vector{Vector{String}}()
-
     brktpairs = Dict("[" => "]", "{" => "}", "(" => ")", "<" => ">")
     
     for line in data
