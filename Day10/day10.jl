@@ -25,13 +25,13 @@ function firstillegal(data)
     return illegals
 end
 
-function pt1(strs)
-    points = Dict(")" => 3, "]" => 57, "}" => 1197, ">" => 25137)
-    return sum(str -> points[str], strs)
+function point1(strs)
+    val = Dict(")" => 3, "]" => 57, "}" => 1197, ">" => 25137)
+    return sum(str -> val[str], strs)
 end
 
 # Solution: 367_059
-pt1(firstillegal(data))
+point1(firstillegal(data))
 
 ## Part 2 -------------------------------------------------------------
 function incomplete(data)
@@ -62,23 +62,15 @@ function incomplete(data)
     return incompletes
 end
 
-function pt2(lines)
-    points = Dict(")" => 1, "]" => 2, "}" => 3, ">" => 4)
-    n = length(lines)
-    pts = Vector{Int}(undef, n)
-
-    for (i, line) in enumerate(lines)
-        pt = 0
-        for str in line
-            pt = 5pt + points[str]
-        end
-        pts[i] = pt
+function point2(lines)
+    val = Dict(")" => 1, "]" => 2, "}" => 3, ">" => 4)
+    points = map(lines) do line
+        reduce((pt, str) -> 5pt + val[str], line, init=0)
     end
-
-    mid = ceil(Int, n/2)
-    sort!(pts)
-    return pts[mid]
+    mid = ceil(Int, length(lines)/2)
+    sort!(points)
+    return points[mid]
 end
 
 # Solution: 1_952_146_692
-pt2(incomplete(data))
+point2(incomplete(data))
