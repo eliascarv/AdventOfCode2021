@@ -65,7 +65,7 @@ function point2(lines)
     points = map(lines) do line
         reduce((pt, str) -> 5pt + val[str], line, init=0)
     end
-    mid = ceil(Int, length(lines)/2)
+    mid = length(lines) ÷ 2 + 1
     sort!(points)
     return points[mid]
 end
