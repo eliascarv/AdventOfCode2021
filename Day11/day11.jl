@@ -31,7 +31,7 @@ function step!(data, idxs::CartesianIndices)
     end
 end
 
-function countflash(init, steps)
+function countflash(init, steps::Int)
     data = copy(init)
     idxs = CartesianIndices(data)
     flashs = 0
