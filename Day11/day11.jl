@@ -5,7 +5,7 @@ for i in axes(data, 1)
     data[i, :] .= parse.(Int, split(lines[i], ""))
 end
 
-## Part 1 -----------------------------------------------------
+## Functions --------------------------------------------------
 const CI = CartesianIndex
 
 step!(data, i::CI) = data[i] == 9 ? data[i] = 0 : data[i] += 1
@@ -31,6 +31,7 @@ function step!(data, idxs::CartesianIndices)
     end
 end
 
+## Part 1 -----------------------------------------------------
 function countflash(init, steps::Int)
     data = copy(init)
     idxs = CartesianIndices(data)
@@ -57,5 +58,6 @@ function allflash(init)
     end
     return st
 end
+
 # Solution: 242
 allflash(data)
