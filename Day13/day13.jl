@@ -7,16 +7,16 @@ const CI = CartesianIndex
 
 function parsedata(lines)
     l = length(lines)
-    n = findfirst(isempty, lines)
-    idxs = Vector{CI{2}}(undef, n - 1)
-    folds = Vector{Pair{Symbol, Int}}(undef, l - n)
-    for i in 1:n-1
+    d = findfirst(isempty, lines)
+    idxs = Vector{CI{2}}(undef, d - 1)
+    folds = Vector{Pair{Symbol, Int}}(undef, l - d)
+    for i in 1:d-1
         x, y = parse.(Int, split(lines[i], ","))
         idxs[i] = CI(y + 1, x + 1)
     end
-    for i in n+1:l
-        var, val = split(lines[i][12:end], "=")
-        folds[i-n] = Symbol(var) => parse(Int, val)
+    for i in d+1:l
+        v, n = split(lines[i][12:end], "=")
+        folds[i-d] = Symbol(v) => parse(Int, n) + 1
     end
     ymax = maximum(i -> i[1], idxs)
     xmax = maximum(i -> i[2], idxs)
@@ -28,18 +28,17 @@ end
 data, folds = parsedata(lines)
 
 ## Part 1 -----------------------------------------------------------
-hrot(M) = hcat([reverse(col) for col in eachcol(M)]...)
-vrot(M) = permutedims(hcat([reverse(row) for row in eachrow(M)]...))
+hrot(M) = reverse(M, dims=1)
+vrot(M) = reverse(M, dims=2)
 
 function foldpaper(data, fold::Pair{Symbol, Int})
-    v = fold[1]
-    n = fold[2] + 1
+    v, n = fold
     if v == :y
-        M = data[1:n-1, :] + hrot(data[n+1:end, :])
+        data = data[1:n-1, :] + hrot(data[n+1:end, :])
     elseif v == :x
-        M = data[:, 1:n-1] + vrot(data[:, n+1:end])
+        data = data[:, 1:n-1] + vrot(data[:, n+1:end])
     end
-    return M
+    return data
 end
 
 # Solution: 653
