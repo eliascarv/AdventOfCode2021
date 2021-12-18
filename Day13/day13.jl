@@ -11,11 +11,11 @@ function parsedata(lines)
     idxs = Vector{CI{2}}(undef, d - 1)
     folds = Vector{Pair{Symbol, Int}}(undef, l - d)
     for i in 1:d-1
-        x, y = parse.(Int, split(lines[i], ","))
+        x, y = parse.(Int, split(lines[i], ','))
         idxs[i] = CI(y + 1, x + 1)
     end
     for i in d+1:l
-        v, n = split(lines[i][12:end], "=")
+        v, n = split(lines[i][12:end], '=')
         folds[i-d] = Symbol(v) => parse(Int, n) + 1
     end
     ymax = maximum(i -> i[1], idxs)
@@ -28,15 +28,12 @@ end
 data, folds = parsedata(lines)
 
 ## Part 1 -----------------------------------------------------------
-hrot(M) = reverse(M, dims=1)
-vrot(M) = reverse(M, dims=2)
-
 function foldpaper(data, fold::Pair{Symbol, Int})
     v, n = fold
     if v == :y
-        data = data[1:n-1, :] + hrot(data[n+1:end, :])
+        data = data[1:n-1, :] + data[end:-1:n+1, :]
     elseif v == :x
-        data = data[:, 1:n-1] + vrot(data[:, n+1:end])
+        data = data[:, 1:n-1] + data[:, end:-1:n+1]
     end
     return data
 end
