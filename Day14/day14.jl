@@ -1,13 +1,13 @@
-## Data -----------------------------------------------------------------------
+## Data -------------------------------------------------------------------------
 lines = readlines(joinpath(@__DIR__, "input.txt"))
 
-polymer = lines[1]
+template = lines[1]
 rulers = Dict(p => r for (p, r) in split.(lines[3:end], " -> "))
 
-## Functions ------------------------------------------------------------------
-function countchars(polymer, rulers, steps)
-    cntpairs = Dict(p => count(p, polymer, overlap=true) for p in keys(rulers))
-    cntchars = Dict(string(c) => count(c, polymer) for c in unique(polymer))
+## Functions --------------------------------------------------------------------
+function countchars(template, rulers, steps)
+    cntpairs = Dict(p => count(p, template, overlap=true) for p in keys(rulers))
+    cntchars = Dict(string(c) => count(c, template) for c in unique(template))
     for _ in 1:steps
         temp = filter(p -> last(p) > 0, cntpairs)
         for p in keys(temp)
@@ -20,12 +20,12 @@ function countchars(polymer, rulers, steps)
     return cntchars
 end
 
-## Part 1 ---------------------------------------------------------------------
+## Part 1 -----------------------------------------------------------------------
 # Solution: 2194
-counts = values(countchars(polymer, rulers, 10))
+counts = values(countchars(template, rulers, 10))
 maximum(counts) - minimum(counts)
 
-## Part 2 ---------------------------------------------------------------------
+## Part 2 -----------------------------------------------------------------------
 # Solution: 2360298895777
-counts = values(countchars(polymer, rulers, 40))
+counts = values(countchars(template, rulers, 40))
 maximum(counts) - minimum(counts)
