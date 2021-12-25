@@ -21,13 +21,11 @@ function countchars(polymer, rulers, steps)
 end
 
 ## Part 1 ---------------------------------------------------------------------
-
 # Solution: 2194
 counts = values(countchars(polymer, rulers, 10))
 maximum(counts) - minimum(counts)
 
 ## Part 2 ---------------------------------------------------------------------
-
 # Solution: 2360298895777
 counts = values(countchars(polymer, rulers, 40))
 maximum(counts) - minimum(counts)
