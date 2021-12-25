@@ -2,7 +2,7 @@
 lines = readlines(joinpath(@__DIR__, "input.txt"))
 
 template = lines[1]
-rulers = Dict(p => r for (p, r) in split.(lines[3:end], " -> "))
+rulers = Dict(p => i for (p, i) in split.(lines[3:end], " -> "))
 
 ## Functions --------------------------------------------------------------------
 function countchars(template, rulers, steps)
